@@ -1,3 +1,9 @@
+/*
+ * @Author: coller
+ * @Date: 2022-10-25 09:36:46
+ * @LastEditTime: 2022-10-29 17:58:11
+ * @Desc:
+ */
 const toString = Object.prototype.toString;
 
 export function is(val, type) {
@@ -8,6 +14,12 @@ export function isDef(value) {
   return value !== undefined && value !== null;
 }
 
+export function isString(val) {
+  return is(val, "String");
+}
+export function isObject(val) {
+  return val !== null && is(val, "Object");
+}
 export function isEmpty(val) {
   if (isArray(val) || isString(val)) {
     return val.length === 0;
@@ -38,3 +50,7 @@ export const deepClone = function (origin) {
   }
   return JSON.parse(JSON.stringify(origin));
 };
+
+export function isArray(val) {
+  return val && Array.isArray(val);
+}

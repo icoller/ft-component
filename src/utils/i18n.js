@@ -29,7 +29,6 @@ function createI18n(options) {
 
     $st(path, ...args) {
       const message = get(this.messages[locale.lang], path);
-      console.log(this.messages[locale.lang], "message");
       return typeof message === "function"
         ? message(...args)
         : message !== null

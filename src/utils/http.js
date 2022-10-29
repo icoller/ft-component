@@ -1,11 +1,10 @@
 /*
  * @Author: coller
  * @Date: 2022-10-21 19:16:05
- * @LastEditTime: 2022-10-21 19:16:09
+ * @LastEditTime: 2022-10-29 16:40:55
  * @Desc:
  */
 import axios from "axios";
-import { get } from "lockr";
 
 const http = axios.create({
   baseURL: "/api", // 基础请求地址
@@ -16,12 +15,13 @@ const http = axios.create({
 http.interceptors.request.use(
   (config) => {
     // 可使用async await 做异步操作
-    if (get("authKey")) {
-      config.headers["authKey"] = get("authKey");
+    const authKey = localStorage.getItem("authKey");
+    if (authKey) {
+      config.headers["authKey"] = authKey;
     }
     if (!config.headers["notEnt"]) {
       // 设置了企业请求
-      const entId = get("entId");
+      const entId = localStorage.getItem("entId");
       if (entId) {
         config.url = "ent_" + entId + "/m/v1/" + config.url;
       }
@@ -34,6 +34,9 @@ http.interceptors.request.use(
 );
 http.interceptors.response.use(
   (res) => {
+    if (res.data.code === 5) {
+      location.reload();
+    }
     return res.data;
   },
   (error) => {
